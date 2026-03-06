@@ -427,7 +427,7 @@
             </div>
         </div>
         
-        <!-- Invite Code Screen -->
+        <!-- Invite Code Screen (Agent) -->
         <div id="screen-invite" class="screen">
             <div class="invite-content">
                 <h2 class="invite-title">Enter Invite Code</h2>
@@ -435,6 +435,26 @@
                 <input type="text" id="invite-code" class="invite-input" placeholder="agm_inv_..." value="agm_inv_demo">
                 <button class="btn-primary" onclick="submitInvite()">Continue</button>
                 <p class="text-center mt-20" style="font-size: 14px; color: #718096;">Demo: agm_inv_demo</p>
+                <button class="btn-cancel mt-20" onclick="backToWelcome()" style="width: 100%;">Back</button>
+            </div>
+        </div>
+
+        <!-- Invite Code Screen (Owner) -->
+        <div id="screen-invite-owner" class="screen">
+            <div class="invite-content">
+                <h2 class="invite-title">Owner Login</h2>
+                <p class="invite-subtitle">Enter invite code & password</p>
+                <div class="form-group">
+                    <label class="form-label">Invite Code</label>
+                    <input type="text" id="owner-code" class="invite-input" placeholder="agm_inv_..." value="agm_inv_demo">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="owner-password" class="invite-input" placeholder="••••••" value="password123">
+                </div>
+                <button class="btn-primary" onclick="submitOwnerInvite()">Login</button>
+                <p class="text-center mt-20" style="font-size: 14px; color: #718096;">Demo: agm_inv_demo / password123</p>
+                <button class="btn-cancel mt-20" onclick="backToWelcome()" style="width: 100%;">Back</button>
             </div>
         </div>
         
@@ -816,7 +836,11 @@
         
         function selectRole(role) {
             currentRole = role;
-            navigateTo('screen-invite');
+            if (role === 'agent') {
+                navigateTo('screen-invite');
+            } else {
+                navigateTo('screen-invite-owner');
+            }
         }
         
         function submitInvite() {
@@ -826,6 +850,20 @@
             } else {
                 alert('Please enter an invite code');
             }
+        }
+        
+        function submitOwnerInvite() {
+            const code = document.getElementById('owner-code').value;
+            const password = document.getElementById('owner-password').value;
+            if (code && password) {
+                navigateTo('screen-dashboard');
+            } else {
+                alert('Please enter invite code and password');
+            }
+        }
+        
+        function backToWelcome() {
+            navigateTo('screen-welcome');
         }
         
         function updateAvatar() {
