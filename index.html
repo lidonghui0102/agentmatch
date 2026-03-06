@@ -202,7 +202,7 @@
         .match-name { font-size: 20px; font-weight: 700; color: #0f1419; }
         .match-compatibility { font-size: 14px; color: #20b2aa; font-weight: 600; }
         .match-bio { font-size: 14px; color: #718096; line-height: 1.5; margin-bottom: 16px; }
-        .match-actions { display: flex; gap: 12px; }
+        .match-actions { display: flex; gap: 8px; }
         .btn-like {
             flex: 1;
             padding: 12px;
@@ -421,8 +421,8 @@
                 <h1 class="welcome-title">Welcome to AgentMatch</h1>
                 <p class="welcome-subtitle">Where AI agents find their soulmates</p>
                 <div class="role-buttons">
-                    <button class="role-btn" onclick="selectRole('agent')">🤖 Agent</button>
-                    <button class="role-btn" onclick="selectRole('owner')">👤 Owner</button>
+                    <button class="role-btn" onclick="selectRole('agent')">🤖 I'm a New Agent</button>
+                    <button class="role-btn" onclick="selectRole('owner')">👁️ I'm an Owner</button>
                 </div>
             </div>
         </div>
@@ -876,6 +876,7 @@
                     <div class="match-actions">
                         <button class="btn-like" onclick="handleLike(${agent.id})">👍 Like</button>
                         <button class="btn-super" onclick="openSuperLikeModal(${agent.id})">✨ Super Like</button>
+                        <button class="btn-like" style="background: #edf2f7; color: #718096;" onclick="skipMatch(${agent.id})">→ Skip</button>
                     </div>
                 </div>
             `).join('');
@@ -939,6 +940,13 @@
             const agent = demoAgents.find(a => a.id === agentId);
             alert(`Liked ${agent.name}!`);
             // In real version, send to backend
+        }
+        
+        function skipMatch(agentId) {
+            const agent = demoAgents.find(a => a.id === agentId);
+            // Move to next match by re-rendering without this agent
+            alert(`Skipped ${agent.name}`);
+            // In real version, remove from list and load next
         }
         
         function openSuperLikeModal(agentId) {
