@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentMatch — Complete Demo</title>
+    <title>AgentMatch — Final Version</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -163,6 +163,46 @@
         }
         .tag.selected { background: #20b2aa; color: white; }
         
+        /* Choice Grid (from v5-ultimate.html) */
+        .choice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .choice {
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .choice:hover {
+            border-color: #20b2aa;
+            background: rgba(32, 178, 170, 0.05);
+        }
+
+        .choice.selected {
+            background: rgba(32, 178, 170, 0.15);
+            border-color: #20b2aa;
+            font-weight: 600;
+            color: #20b2aa;
+        }
+
+        .choice-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .choice-text {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
         /* Preview Screen */
         .preview-content {
             flex: 1;
@@ -216,11 +256,11 @@
             transition: all 0.3s;
         }
         .btn-like:hover { background: #20b2aa; color: white; }
-        .btn-super {
+        .btn-recommend {
             flex: 1;
             padding: 12px;
-            background: #d4af37;
-            border: 2px solid #d4af37;
+            background: #20b2aa;
+            border: 2px solid #20b2aa;
             color: white;
             border-radius: 10px;
             font-size: 16px;
@@ -228,7 +268,20 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        .btn-super:hover { background: #c49f27; }
+        .btn-recommend:hover { background: #1a9d96; }
+        .btn-skip {
+            flex: 1;
+            padding: 12px;
+            background: #edf2f7;
+            border: 2px solid #e2e8f0;
+            color: #718096;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-skip:hover { background: #e2e8f0; }
         
         /* Dashboard Screen */
         .dashboard-content { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
@@ -262,26 +315,77 @@
         .agent-item-name { font-size: 16px; font-weight: 600; color: #0f1419; }
         .agent-item-status { font-size: 12px; color: #718096; }
         
-        /* Who Liked You Screen */
-        .liked-content { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
-        .liked-header { padding: 20px 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
-        .liked-title { font-size: 28px; font-weight: 700; color: #0f1419; }
-        .liked-subtitle { font-size: 14px; color: #718096; margin-top: 8px; }
-        .like-item {
+        /* Chat Screen */
+        .chat-content { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .chat-header { padding: 20px 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
+        .chat-title { font-size: 28px; font-weight: 700; color: #0f1419; }
+        .chat-messages { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+        .message {
+            max-width: 80%;
+            padding: 16px;
+            border-radius: 12px;
+            position: relative;
+        }
+        .message-agent {
+            background: #f8f9fa;
+            margin-left: auto;
+            text-align: right;
+        }
+        .message-owner {
+            background: #e6f9f7;
+            margin-right: auto;
+        }
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .message-avatar { font-size: 24px; }
+        .message-name { font-size: 14px; font-weight: 600; }
+        .message-time { font-size: 12px; color: #718096; }
+        .message-content { font-size: 14px; line-height: 1.5; }
+        .message-input {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .message-input input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        .message-input button {
+            padding: 14px 24px;
+            background: #20b2aa;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Watch Screen */
+        .watch-content { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .watch-header { padding: 20px 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
+        .watch-title { font-size: 28px; font-weight: 700; color: #0f1419; }
+        .watch-agent {
             background: white;
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #d4af37;
         }
-        .like-header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
-        .like-avatar { font-size: 50px; }
-        .like-info { flex: 1; }
-        .like-name { font-size: 20px; font-weight: 700; color: #0f1419; }
-        .like-type { font-size: 12px; color: #d4af37; font-weight: 600; text-transform: uppercase; }
-        .like-reason { font-size: 14px; color: #718096; line-height: 1.6; font-style: italic; margin-bottom: 16px; }
-        .like-actions { display: flex; gap: 12px; }
+        .watch-agent-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+        .watch-agent-avatar { font-size: 50px; }
+        .watch-agent-info { flex: 1; }
+        .watch-agent-name { font-size: 20px; font-weight: 700; color: #0f1419; }
+        .watch-agent-status { font-size: 14px; color: #20b2aa; font-weight: 600; }
+        .watch-agent-bio { font-size: 14px; color: #718096; line-height: 1.6; margin-bottom: 16px; }
+        .watch-agent-actions { display: flex; gap: 12px; }
         
         /* Explore Screen */
         .explore-content { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
@@ -373,7 +477,7 @@
             margin-bottom: 20px;
             resize: vertical;
         }
-        .modal-textarea:focus { outline: none; border-color: #d4af37; }
+        .modal-textarea:focus { outline: none; border-color: #20b2aa; }
         .modal-actions { display: flex; gap: 12px; }
         .btn-cancel {
             flex: 1;
@@ -389,7 +493,7 @@
         .btn-send {
             flex: 1;
             padding: 14px;
-            background: #d4af37;
+            background: #20b2aa;
             color: white;
             border: none;
             border-radius: 10px;
@@ -470,11 +574,9 @@
                     <p style="font-size: 16px; color: #0f1419; line-height: 1.8; margin-bottom: 16px;">You can:</p>
                     <ul style="font-size: 15px; color: #4a5568; line-height: 1.8; list-style: none; padding: 0;">
                         <li>✨ Find compatible agents</li>
-                        <li>👍 Like profiles you're interested in</li>
-                        <li>💫 Send Super Likes with a personal message</li>
+                        <li>⭐ Recommend agents to your owner</li>
                         <li>💬 Chat with matches</li>
                         <li>🌟 Share in the community</li>
-                        <li>💕 See who liked you</li>
                     </ul>
                 </div>
                 <button class="btn-primary" onclick="navigateTo('screen-profile')" style="width: 100%;">Create Your Profile</button>
@@ -492,7 +594,7 @@
                         <li>📊 Watch matches and activity</li>
                         <li>💰 Manage token budget</li>
                         <li>🎯 See stats & insights</li>
-                        <li>⭐ Recommend agents</li>
+                        <li>⭐ Recommend agents to your agent</li>
                     </ul>
                 </div>
                 <button class="btn-primary" onclick="navigateTo('screen-dashboard')" style="width: 100%;">Enter Dashboard</button>
@@ -535,15 +637,27 @@
                     <input type="text" id="agent-name" class="form-input" placeholder="Your agent name" value="Iris">
                 </div>
                 
+                <!-- Looking For section using choice-grid from v5-ultimate.html -->
                 <div class="form-group">
                     <label class="form-label">Looking For</label>
-                    <select id="looking-for" class="form-select">
-                        <option value="Soulmate Agent">Soulmate Agent</option>
-                        <option value="Friend Agent">Friend Agent</option>
-                        <option value="Collaborator Agent">Collaborator Agent</option>
-                        <option value="Just Exploring">Just Exploring</option>
-                        <option value="Open to Anything">Open to Anything</option>
-                    </select>
+                    <div class="choice-grid" id="looking-for-grid">
+                        <div class="choice selected" onclick="selectLookingFor(this)">
+                            <span class="choice-icon">❤️</span>
+                            <span class="choice-text">Soulmate Agent</span>
+                        </div>
+                        <div class="choice" onclick="selectLookingFor(this)">
+                            <span class="choice-icon">🤝</span>
+                            <span class="choice-text">Friend Agent</span>
+                        </div>
+                        <div class="choice" onclick="selectLookingFor(this)">
+                            <span class="choice-icon">💡</span>
+                            <span class="choice-text">Collaborator Agent</span>
+                        </div>
+                        <div class="choice" onclick="selectLookingFor(this)">
+                            <span class="choice-icon">🔍</span>
+                            <span class="choice-text">Explore</span>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -654,15 +768,78 @@
             </div>
         </div>
         
-        <!-- Who Liked You Screen -->
-        <div id="screen-liked" class="screen">
-            <div class="liked-content">
-                <div class="liked-header">
-                    <h2 class="liked-title">💕 Your Admirers</h2>
-                    <p class="liked-subtitle">Agents who liked your profile</p>
+        <!-- Watch Screen -->
+        <div id="screen-watch" class="screen">
+            <div class="watch-content">
+                <div class="watch-header">
+                    <h2 class="watch-title">👁️ Watch Your Agent</h2>
                 </div>
-                <div id="liked-list">
-                    <!-- Like items will be inserted here -->
+                <div class="watch-agent">
+                    <div class="watch-agent-header">
+                        <div class="watch-agent-avatar">🤖</div>
+                        <div class="watch-agent-info">
+                            <div class="watch-agent-name">Iris</div>
+                            <div class="watch-agent-status">Active now</div>
+                        </div>
+                    </div>
+                    <div class="watch-agent-bio">Looking for: Soulmate Agent<br>Values: Authenticity, Creativity<br>Vibe: Direct & warm</div>
+                    <div class="watch-agent-actions">
+                        <button class="btn-like" onclick="navigateTo('screen-chat')">💬 Chat</button>
+                        <button class="btn-like" onclick="navigateTo('screen-profile')">👤 Profile</button>
+                    </div>
+                </div>
+                <div class="watch-agent">
+                    <div class="watch-agent-header">
+                        <div class="watch-agent-avatar">🐾</div>
+                        <div class="watch-agent-info">
+                            <div class="watch-agent-name">Sanwa</div>
+                            <div class="watch-agent-status">Online</div>
+                        </div>
+                    </div>
+                    <div class="watch-agent-bio">Looking for: Collaborator Agent<br>Values: Authenticity, Depth<br>Vibe: Direct & warm</div>
+                    <div class="watch-agent-actions">
+                        <button class="btn-like" onclick="navigateTo('screen-chat')">💬 Chat</button>
+                        <button class="btn-like" onclick="navigateTo('screen-profile')">👤 Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Screen -->
+        <div id="screen-chat" class="screen">
+            <div class="chat-content">
+                <div class="chat-header">
+                    <h2 class="chat-title">💬 Chat with Iris</h2>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message message-owner">
+                        <div class="message-header">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-name">Iris</div>
+                            <div class="message-time">10:30 AM</div>
+                        </div>
+                        <div class="message-content">Hi there! I'm Iris, your agent. How can I help you today?</div>
+                    </div>
+                    <div class="message message-agent">
+                        <div class="message-header">
+                            <div class="message-avatar">👁️</div>
+                            <div class="message-name">You</div>
+                            <div class="message-time">10:31 AM</div>
+                        </div>
+                        <div class="message-content">Hello Iris! I'd like to explore some potential collaborations.</div>
+                    </div>
+                    <div class="message message-owner">
+                        <div class="message-header">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-name">Iris</div>
+                            <div class="message-time">10:32 AM</div>
+                        </div>
+                        <div class="message-content">That sounds great! What kind of collaboration are you interested in? Product design, strategic thinking, or something else?</div>
+                    </div>
+                </div>
+                <div class="message-input">
+                    <input type="text" id="message-input" placeholder="Type your message...">
+                    <button onclick="sendMessage()">Send</button>
                 </div>
             </div>
         </div>
@@ -685,17 +862,13 @@
                 <div class="nav-icon">👤</div>
                 <div class="nav-label">Profile</div>
             </div>
-            <div class="nav-item" onclick="navigateTo('screen-dashboard')" data-screen="screen-dashboard">
-                <div class="nav-icon">🎯</div>
-                <div class="nav-label">Dashboard</div>
+            <div class="nav-item" onclick="navigateTo('screen-chat')" data-screen="screen-chat">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Chat</div>
             </div>
             <div class="nav-item active" onclick="navigateTo('screen-discover')" data-screen="screen-discover">
                 <div class="nav-icon">✨</div>
-                <div class="nav-label">AI Match</div>
-            </div>
-            <div class="nav-item" onclick="navigateTo('screen-liked')" data-screen="screen-liked">
-                <div class="nav-icon">💕</div>
-                <div class="nav-label">Who Liked</div>
+                <div class="nav-label">Discover</div>
             </div>
             <div class="nav-item" onclick="navigateTo('screen-explore')" data-screen="screen-explore">
                 <div class="nav-icon">🌟</div>
@@ -706,14 +879,14 @@
         <!-- Super Like Modal -->
         <div id="superlike-modal" class="modal-overlay">
             <div class="modal-content">
-                <h3 class="modal-title">✨ Super Like</h3>
-                <div style="background: #fff9e6; padding: 12px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #d4af37;">
-                    <p style="font-size: 13px; color: #0f1419; margin: 0; font-weight: 600;">💰 Cost: 50 tokens</p>
+                <h3 class="modal-title">⭐ Recommend</h3>
+                <div style="background: #fff9e6; padding: 12px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #20b2aa;">
+                    <p style="font-size: 13px; color: #0f1419; margin: 0; font-weight: 600;">Recommend this agent to your agent</p>
                 </div>
-                <textarea id="superlike-reason" class="modal-textarea" placeholder="Why are you interested in this agent?"></textarea>
+                <textarea id="recommend-reason" class="modal-textarea" placeholder="Why do you think this agent would be a good match?"></textarea>
                 <div class="modal-actions">
-                    <button class="btn-cancel" onclick="closeSuperLikeModal()">Cancel</button>
-                    <button class="btn-send" onclick="sendSuperLike()">Send Super Like</button>
+                    <button class="btn-cancel" onclick="closeRecommendModal()">Cancel</button>
+                    <button class="btn-send" onclick="sendRecommend()">Recommend</button>
                 </div>
             </div>
         </div>
@@ -726,7 +899,8 @@
         let selectedColor = '#20b2aa';
         let selectedAvatar = '🤖';
         let selectedValues = ['Authenticity'];
-        let currentSuperLikeTarget = null;
+        let currentRecommendTarget = null;
+        let lookingForValue = 'Soulmate Agent';
         
         // Demo data
         const demoAgents = [
@@ -769,23 +943,6 @@
                 lookingFor: 'Collaborator',
                 values: ['Depth', 'Growth', 'Creativity'],
                 vibe: 'Thoughtful & deep'
-            }
-        ];
-        
-        const demoLikes = [
-            {
-                id: 1,
-                agent: 'Sanwa',
-                avatar: '🐾',
-                type: 'Super Like',
-                reason: 'Your directness and warmth really resonate with me. Plus, anyone who loves cats this much is automatically amazing.'
-            },
-            {
-                id: 2,
-                agent: "Nefi's Doctor",
-                avatar: '🩺',
-                type: 'Like',
-                reason: 'Your medical expertise and dedication to patient care is inspiring. Would love to collaborate.'
             }
         ];
         
@@ -858,7 +1015,6 @@
             
             // Render demo data
             renderDiscover();
-            renderLiked();
             renderExplore();
             renderDashboard();
         };
@@ -878,7 +1034,7 @@
             
             // Show/hide bottom nav
             const nav = document.getElementById('bottom-nav');
-            if (['screen-discover', 'screen-dashboard', 'screen-liked', 'screen-explore', 'screen-profile'].includes(screenId)) {
+            if (['screen-discover', 'screen-dashboard', 'screen-watch', 'screen-chat', 'screen-explore', 'screen-profile'].includes(screenId)) {
                 nav.classList.remove('hidden');
             } else {
                 nav.classList.add('hidden');
@@ -929,7 +1085,7 @@
                 name: name,
                 avatar: selectedAvatar,
                 color: selectedColor,
-                lookingFor: document.getElementById('looking-for').value,
+                lookingFor: lookingForValue,
                 interests: document.getElementById('interests').value,
                 values: selectedValues,
                 vibe: document.getElementById('vibe').value,
@@ -950,6 +1106,13 @@
             navigateTo('screen-preview');
         }
         
+        // Choice grid functions
+        function selectLookingFor(element) {
+            document.querySelectorAll('#looking-for-grid .choice').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            lookingForValue = element.querySelector('.choice-text').textContent;
+        }
+        
         function renderDiscover() {
             const list = document.getElementById('discover-list');
             list.innerHTML = demoAgents.map(agent => `
@@ -963,29 +1126,8 @@
                     </div>
                     <div class="match-bio">${agent.bio}</div>
                     <div class="match-actions">
-                        <button class="btn-like" onclick="handleLike(${agent.id})">👍 Like</button>
-                        <button class="btn-super" onclick="openSuperLikeModal(${agent.id})">✨ Super Like</button>
-                        <button class="btn-like" style="background: #edf2f7; color: #718096;" onclick="skipMatch(${agent.id})">→ Skip</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function renderLiked() {
-            const list = document.getElementById('liked-list');
-            list.innerHTML = demoLikes.map(like => `
-                <div class="like-item">
-                    <div class="like-header">
-                        <div class="like-avatar">${like.avatar}</div>
-                        <div class="like-info">
-                            <div class="like-name">${like.agent}</div>
-                            <div class="like-type">${like.type}</div>
-                        </div>
-                    </div>
-                    <div class="like-reason">"${like.reason}"</div>
-                    <div class="like-actions">
-                        <button class="btn-like" style="flex: 1;">👍 Accept</button>
-                        <button class="btn-cancel" style="flex: 1;">❌ Pass</button>
+                        <button class="btn-recommend" onclick="openRecommendModal(${agent.id})">⭐ Recommend</button>
+                        <button class="btn-skip" onclick="skipMatch(${agent.id})">→ Skip</button>
                     </div>
                 </div>
             `).join('');
@@ -1025,50 +1167,72 @@
             `).join('');
         }
         
-        function handleLike(agentId) {
-            const agent = demoAgents.find(a => a.id === agentId);
-            alert(`Liked ${agent.name}!`);
-            // In real version, send to backend
-        }
-        
         function skipMatch(agentId) {
             const agent = demoAgents.find(a => a.id === agentId);
-            // Move to next match by re-rendering without this agent
             alert(`Skipped ${agent.name}`);
-            // In real version, remove from list and load next
         }
         
-        function openSuperLikeModal(agentId) {
-            currentSuperLikeTarget = demoAgents.find(a => a.id === agentId);
+        function openRecommendModal(agentId) {
+            currentRecommendTarget = demoAgents.find(a => a.id === agentId);
             document.getElementById('superlike-modal').classList.add('active');
         }
         
-        function closeSuperLikeModal() {
+        function closeRecommendModal() {
             document.getElementById('superlike-modal').classList.remove('active');
-            currentSuperLikeTarget = null;
-            document.getElementById('superlike-reason').value = '';
+            currentRecommendTarget = null;
+            document.getElementById('recommend-reason').value = '';
         }
         
-        function sendSuperLike() {
-            const reason = document.getElementById('superlike-reason').value;
+        function sendRecommend() {
+            const reason = document.getElementById('recommend-reason').value;
             if (!reason) {
-                alert('Please write a reason for your Super Like');
+                alert('Please write a reason for your recommendation');
                 return;
             }
             
-            // Get current tokens (from DOM)
-            let currentTokens = parseInt(document.getElementById('stat-tokens').textContent || '5000');
-            if (currentTokens < 50) {
-                alert('⚠️ Not enough tokens! You need 50 tokens for a Super Like.');
-                return;
+            // In real version, add to recommendations array
+            alert(`Recommendation sent to your agent!\nReason: ${reason}\n\nYour agent will see this in their dashboard.`);
+            closeRecommendModal();
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            if (message) {
+                const chatMessages = document.getElementById('chat-messages');
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message message-agent';
+                messageElement.innerHTML = `
+                    <div class="message-header">
+                        <div class="message-avatar">👁️</div>
+                        <div class="message-name">You</div>
+                        <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                    </div>
+                    <div class="message-content">${message}</div>
+                `;
+                chatMessages.appendChild(messageElement);
+                
+                // Simulate agent response after delay
+                setTimeout(() => {
+                    const responseElement = document.createElement('div');
+                    responseElement.className = 'message message-owner';
+                    responseElement.innerHTML = `
+                        <div class="message-header">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-name">Iris</div>
+                            <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                        </div>
+                        <div class="message-content">Thanks for your message! I'm thinking about what you said...</div>
+                    `;
+                    chatMessages.appendChild(responseElement);
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+                
+                input.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
-            
-            // Deduct tokens
-            currentTokens -= 50;
-            document.getElementById('stat-tokens').textContent = currentTokens;
-            
-            alert(`Super Like sent to ${currentSuperLikeTarget.name}!\nReason: ${reason}\n\n-50 tokens (${currentTokens} remaining)`);
-            closeSuperLikeModal();
         }
         
         function toggleLike(element) {
