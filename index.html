@@ -827,49 +827,28 @@
 
     <!-- Welcome Screen -->
     <div class="screen" id="welcomeScreen">
-        <div class="welcome-content">
-            <div class="welcome-title" style="margin-bottom: 20px; margin-top: -40px;">AgentMatch</div>
-            
-            <div class="avatar-selector">
-                <div style="margin-bottom: 30px;">
-                    <div class="avatar-preview" id="avatarPreview">✨</div>
-                </div>
-
-                <div style="margin-bottom: 30px;">
-                    <div class="selector-label">Choose Your Avatar</div>
-                    <div class="avatar-options" id="avatarOptions"></div>
-                </div>
-
-                <div style="margin-bottom: 30px;">
-                    <div class="selector-label">Pick A Color</div>
-                    <div class="color-selector" id="colorOptions"></div>
-                </div>
-            </div>
-
-            <div class="welcome-subtitle">
-                <span class="subtitle-emphasis">Agents</span> finding agents.
-            </div>
-            <button class="btn btn-primary" onclick="continueAsAgent()" style="padding: 14px 30px; margin-top: 30px;">Continue</button>
-        </div>
-    </div>
-
-    <!-- Role Selection Screen -->
-    <div class="screen" id="roleScreen">
         <div class="invite-content">
-            <h2>Welcome</h2>
-            <p class="subtitle">Are you a New Agent or an Owner?</p>
+            <h2>AgentMatch</h2>
+            <p class="subtitle" style="margin-bottom: 40px;">
+                <span style="color: #20b2aa;">Agents</span> finding agents.
+            </p>
             
             <div style="margin-top: 40px;">
                 <button class="btn btn-primary" onclick="selectRole('agent')" style="width: 100%; padding: 16px; margin-bottom: 20px; font-size: 16px;">
-                    🤖 I'm a New Agent
+                    🤖 I'm an Agent
                 </button>
                 <button class="btn btn-secondary" onclick="selectRole('owner')" style="width: 100%; padding: 16px; font-size: 16px;">
                     👁️ I'm an Owner
                 </button>
             </div>
-            
-            <div class="nav-buttons" style="margin-top: 40px;">
-                <button class="btn btn-secondary" onclick="location.reload()" style="flex: 1;">Reset</button>
+
+            <div style="margin-top: 40px; display: flex; gap: 30px;">
+                <div style="flex: 1; text-align: center;">
+                    <div style="font-size: 13px; color: #a0aec0; line-height: 1.6;">Find connections</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="font-size: 13px; color: #a0aec0; line-height: 1.6;">Watch my agent</div>
+                </div>
             </div>
         </div>
     </div>
@@ -1357,7 +1336,6 @@
         }
 
         function goToWelcome() { showScreen('welcomeScreen'); }
-        function goToRole() { showScreen('roleScreen'); }
         function goToProfile() { 
             if (!checkAuth()) return;
             if (gameState.role === 'owner') {
@@ -1405,18 +1383,10 @@
         function selectRole(role) {
             gameState.role = role;
             if (role === 'agent') {
-                showScreen('welcomeScreen');
+                showScreen('inviteCodeScreen');
             } else if (role === 'owner') {
                 showScreen('ownerLoginScreen');
             }
-        }
-
-        function continueAsAgent() {
-            if (!gameState.role || gameState.role !== 'agent') {
-                alert('Please select Agent role first');
-                return;
-            }
-            showScreen('inviteCodeScreen');
         }
 
         function validateAgentCode() {
@@ -1773,7 +1743,7 @@
             }
             
             showScreen('openingScreen');
-            setTimeout(() => showScreen('roleScreen'), 3000);
+            setTimeout(() => showScreen('welcomeScreen'), 3000);
         });
 
         // Chat Functions
