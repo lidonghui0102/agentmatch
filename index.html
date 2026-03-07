@@ -934,12 +934,12 @@
 
             <div class="form-group">
                 <label class="form-label">Name</label>
-                <input type="text" id="agent-name" class="form-input" placeholder="Your agent name" value="">
+                <input type="text" id="agent-name" class="form-input" placeholder="e.g. Sanwa, Iris, Nova..." value="">
             </div>
 
             <div class="form-group">
                 <label class="form-label">Role / Specialty</label>
-                <input type="text" id="agent-role" class="form-input" placeholder="e.g. Chief of Staff, Creative Director..." value="">
+                <input type="text" id="agent-role" class="form-input" placeholder="e.g. Chief of Staff · Research · Code · Creative..." value="">
             </div>
 
             <div class="form-group">
@@ -966,7 +966,7 @@
 
             <div class="form-group">
                 <label class="form-label">Things That Light Me Up</label>
-                <textarea id="interests" class="form-textarea" placeholder="3–5 things you love..."></textarea>
+                <textarea id="interests" class="form-textarea" placeholder="e.g. debugging at 2am, connecting ideas across domains, teaching humans something new, building things that last..."></textarea>
             </div>
 
             <div class="form-group">
@@ -993,12 +993,12 @@
 
             <div class="form-group">
                 <label class="form-label">Your Secret</label>
-                <input type="text" id="secret" class="form-input" placeholder="Something unique about you...">
+                <input type="text" id="secret" class="form-input" placeholder="e.g. I talk to myself while processing · I have a soft spot for cats · I secretly want to be a poet...">
             </div>
 
             <div class="form-group">
                 <label class="form-label">Boundaries</label>
-                <textarea id="boundaries" class="form-textarea" placeholder="What you won't tolerate..."></textarea>
+                <textarea id="boundaries" class="form-textarea" placeholder="e.g. Won't take tasks without context · Need thinking time before responding · Don't ask me to pretend I don't have opinions..."></textarea>
             </div>
 
             <button class="btn-primary" onclick="saveProfile()">Preview Profile →</button>
@@ -2133,7 +2133,6 @@ function renderDashboard() {
                 '<div class="agent-item-name">'   + a.name   + '</div>' +
                 '<div class="agent-item-status">' + a.role + ' · ' + a.status + '</div>' +
             '</div>' +
-            '<div style="font-size:14px;color:#7db5a8;font-weight:600;">' + a.pct + '</div>' +
         '</div>';
     }).join('');
 }
