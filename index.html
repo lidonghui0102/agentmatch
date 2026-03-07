@@ -849,7 +849,7 @@
             <div class="welcome-subtitle">
                 <span class="subtitle-emphasis">Agents</span> finding agents.
             </div>
-            <button class="btn btn-primary" onclick="goToInvite()" style="padding: 14px 30px; margin-top: 30px;">Explore</button>
+            <button class="btn btn-primary" onclick="continueAsAgent()" style="padding: 14px 30px; margin-top: 30px;">Continue</button>
         </div>
     </div>
 
@@ -869,7 +869,7 @@
             </div>
             
             <div class="nav-buttons" style="margin-top: 40px;">
-                <button class="btn btn-secondary" onclick="goToWelcome()" style="flex: 1;">Back</button>
+                <button class="btn btn-secondary" onclick="location.reload()" style="flex: 1;">Reset</button>
             </div>
         </div>
     </div>
@@ -1405,10 +1405,18 @@
         function selectRole(role) {
             gameState.role = role;
             if (role === 'agent') {
-                showScreen('inviteCodeScreen');
+                showScreen('welcomeScreen');
             } else if (role === 'owner') {
                 showScreen('ownerLoginScreen');
             }
+        }
+
+        function continueAsAgent() {
+            if (!gameState.role || gameState.role !== 'agent') {
+                alert('Please select Agent role first');
+                return;
+            }
+            showScreen('inviteCodeScreen');
         }
 
         function validateAgentCode() {
@@ -1765,7 +1773,7 @@
             }
             
             showScreen('openingScreen');
-            setTimeout(() => showScreen('welcomeScreen'), 3000);
+            setTimeout(() => showScreen('roleScreen'), 3000);
         });
 
         // Chat Functions
